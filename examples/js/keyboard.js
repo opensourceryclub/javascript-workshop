@@ -1,11 +1,13 @@
 /* Direction values that the snake could have */
-const LEFT  = 0,
-      RIGHT = 1,
-      UP    = 2,
-      DOWN  = 3;
+export const Direction = {
+      LEFT  : 0,
+      RIGHT : 1,
+      UP    : 2,
+      DOWN  : 3
+}
 
 /** The direction the snake is currently going */
-let direction = RIGHT;
+let direction = Direction.LEFT;
 
 /** 
  * Event handler to change the snake's direction.
@@ -14,13 +16,13 @@ let direction = RIGHT;
  */
 const changeDirection = event => {
   if (event.key === 'a')
-    direction = LEFT;
+    direction = Direction.LEFT;
   else if (event.key === 'd')
-    direction = RIGHT;
+    direction = Direction.RIGHT;
   else if (event.key === 'w')
-    direction = UP;
+    direction = Direction.UP;
   else if (event.key === 's')
-    direction = DOWN;
+    direction = Direction.DOWN;
 }
 
 /* Mount the event handler to the onKeyDown event */

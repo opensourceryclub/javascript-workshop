@@ -1,4 +1,13 @@
-let canvas = document.getElementById("snake")
+import { Board } from "./board.js";
 
+const board = new Board()
+let intervalId = setInterval(() => {
+    board.refresh();
+    if (!board.inPlay) {
+        clearInterval(intervalId)
+    }
+}, 100)
 
-// has a grid of 25px x 25px blocks
+let refresh = () => {
+    
+}
