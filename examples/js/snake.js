@@ -6,16 +6,23 @@ import { getDirection, Direction } from "./keyboard.js";
 export class Snake {
     bits;
     collided;
+    bitsToGrow;
 
     constructor() {
         this.bits = [getLocation(10, 10), getLocation(11, 10), getLocation(12, 10), getLocation(13,10)];
         this.collided = false;
+        this.bitsToGrow = 0;
     }
 
     move() {
-        this.bits.pop();
+        if (this.bitsToGrow == 0)
+            this.bits.pop();
+        else
+            this.bitsToGrow--;
+        
         let direction = getDirection()
         let head = this.bits[0];
+
         if (direction == Direction.UP) {
             this.bits.unshift(new Location(head.x, head.y - BLOCK_SIZE));
         } else if (direction == Direction.DOWN) {
@@ -33,12 +40,6 @@ export class Snake {
             if (this.bits[i].x == head.x && this.bits[i].y == head.y)
                 return true;
         return head.x < 0 || head.x > boardWidth || head.y < 0 || head.y > boardHeight
-    }
-
-    drawCells(_ctx) {
-        this.bits.forEach(bit => {
-            _ctx.strokeRect(bit.x, bit.y, BLOCK_SIZE, BLOCK_SIZE);
-        });
     }
 }
 

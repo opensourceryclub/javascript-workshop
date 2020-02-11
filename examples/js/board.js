@@ -6,6 +6,7 @@ export class Board {
   height;
   _ctx;
   snake;
+  apple;
   inPlay;
 
   constructor() {
@@ -14,6 +15,7 @@ export class Board {
     this.width    = canvas.width;
     this.height   = canvas.height;
     this.snake    = new Snake();
+    this.setApple();
     this.inPlay = true;
   }
   
@@ -21,15 +23,45 @@ export class Board {
     this._ctx.strokeStyle = "#FF0000";
     this._ctx.clearRect(0, 0, this.width, this.height);
     this.snake.move()
-    this.snake.drawCells(this._ctx);
+    this.checkAppleCollision()
+    this.draw()
     if (this.snake.checkCollision(this.width, this.height)) {
       // gameover
-      console.log("GAMEOVER")
+      this._ctx.fillText("Game Over", 100, 100)
       this.inPlay = false;
     }
   }
 
-  drawCell(...cells) {
+  draw() {
+    // draw snake
+    this.snake.bits.forEach(bit => {
+      this._ctx.strokeRect(bit.x, bit.y, BLOCK_SIZE, BLOCK_SIZE);
+    });
+
+    // draw apple 
+    this._ctx.fillRect(this.apple.x, this.apple.y, BLOCK_SIZE, BLOCK_SIZE);
+
+  }
+
+
+  setApple() {
+    do {
+      this.apple = getLocation(Math.trunc(Math.random() * 20), Math.trunc(Math.random() * 20))
+    } while (this.snake.bits.includes(this.apple));
+  }
+
+  checkAppleCollision() {
+    if (this.snake.bits[0].x == this.apple.x && this.snake.bits[0].y == this.apple.y) {
+      console.log("CHECKED")
+      this.snake.bitsToGrow += 3;
+      this.setApple()
+    }
+  }
+
+  reset() {
+    this.setApple()
+    this.snake  = new Snake();
+    this.inPlay = true;
   }
 }
 
