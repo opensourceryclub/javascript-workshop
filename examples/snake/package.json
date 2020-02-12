@@ -1,0 +1,23 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "Snake game example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opensourceryclub/javascript-workshop.git"
+  },
+  "author": "Open Sourcery",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/opensourceryclub/javascript-workshop/issues"
+  },
+  "homepage": "https://github.com/opensourceryclub/javascript-workshop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
