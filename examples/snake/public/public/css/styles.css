@@ -1,0 +1,10 @@
+body > div {
+	/*display: flex;
+	 align-content: center; */
+	text-align: center;
+}
+
+#reset-button {
+	font-size: 1em;
+	margin: auto;
+}
