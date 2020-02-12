@@ -39,42 +39,33 @@ export class Board {
    * @type { {x: number, y: number} }
    */
   apple;
-  /**
-   * Game status flag.
-   * __true__ if the game is in progress, __false__ otherwise.
-   * 
-   * @type {boolean}
-   */
-  inPlay;
 
   constructor() {
     const canvas = document.getElementById('snake-canvas');
     if (!(canvas instanceof HTMLCanvasElement))
       throw new Error('element with id "snake-canvas" must be a canvas element.')
 
-    this._ctx = canvas.getContext('2d');
-    this.width = canvas.width;
-    this.height = canvas.height;
-    this.snake = new Snake();
+    this._ctx     = canvas.getContext('2d');
+    this.width    = canvas.width;
+    this.height   = canvas.height;
+    this.snake    = new Snake();
     this.setApple();
-    this.inPlay = true;
   }
 
-  refresh() {
-    this._ctx.strokeStyle = "#FF0000";
-    this._ctx.clearRect(0, 0, this.width, this.height);
+  update() {
+    // Move the snake
     this.snake.move()
     this.checkAppleCollision()
-    this.draw()
 
-    if (this.checkSnakeCollision()) {
-      // game over
-      this._ctx.fillText("Game Over", 100, 100)
-      this.inPlay = false;
-    }
+    this.snake.isAlive = !this.checkSnakeCollision();
+    this.draw()
   }
 
   draw() {
+    // clear the game board
+    this._ctx.strokeStyle = "#FF0000";
+    this._ctx.clearRect(0, 0, this.width, this.height);
+
     // draw snake
     this.snake.bits.forEach(bit => {
       let { x, y, width, height } = Board.toPixels(bit);
@@ -84,6 +75,10 @@ export class Board {
     // draw apple 
     let { x, y, width, height } = Board.toPixels(this.apple);
     this._ctx.fillRect(x, y, width, height);
+
+    if (!this.snake.isAlive) {
+      this._ctx.fillText("Game Over", 100, 100)
+    }
 
   }
 
@@ -105,6 +100,9 @@ export class Board {
   }
 
   checkSnakeCollision() {
+    if (!this.snake.isAlive)
+      return true;
+
     let { bits } = this.snake;
     let { x, y } = bits[0];
 
@@ -119,8 +117,7 @@ export class Board {
 
   reset() {
     this.setApple()
-    this.snake = new Snake();
-    this.inPlay = true;
+    this.snake.reset();
   }
 
   /**
